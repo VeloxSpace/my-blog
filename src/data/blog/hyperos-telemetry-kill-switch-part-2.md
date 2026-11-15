@@ -212,7 +212,7 @@ adb shell pm uninstall -k --user 0 com.miui.securityinputmethod
 ### 2. 第二组：2 条
 
 **`com.baidu.input_mi`：百度输入法小米版。`com.iflytek.inputmethod.miui`：讯飞输入法小米版。它俩不是安全键盘里绑着的，是独立的包，装在 `/data/app` 里，`pm list -s` 扫不到，是 `adb shell ime list -a` 抓到的真包名。默认已经是 Gboard，卸了它俩还有键盘用。**
->注意：这两条用 install-existing 装不回来，卸载后要到应用商店安装普通版。
+>注意：这两条用 install-existing 装不回来，无法回滚实现，卸载后如果需要要到应用商店安装普通版。
 
 ```cmd
 adb shell pm uninstall -k --user 0 com.baidu.input_mi
