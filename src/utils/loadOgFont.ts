@@ -21,9 +21,7 @@ export async function loadOgFont(
     const file = await readFile(path.join(process.cwd(), "dist", fontPath));
     return Uint8Array.from(file).buffer as ArrayBuffer;
   } catch {
-    const res = await fetch(
-      experimental_getFontFileURL(fontPath, requestUrl)
-    );
+    const res = await fetch(experimental_getFontFileURL(fontPath, requestUrl));
     return res.arrayBuffer();
   }
 }

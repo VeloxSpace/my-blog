@@ -32,28 +32,28 @@ tags: [VPS, Security, SSH, Linux]
 
 1.  **查看公钥内容：**
 
-    * Windows CMD 输入： `type %userprofile%\.ssh\id_ed25519.pub`
-    * Mac/Linux 输入： `cat ~/.ssh/id_ed25519.pub`
+    - Windows CMD 输入： `type %userprofile%\.ssh\id_ed25519.pub`
+    - Mac/Linux 输入： `cat ~/.ssh/id_ed25519.pub`
 
-    *(你会看到以 `ssh-ed25519` 开头的一长串字符，把它完整复制下来。)*
+    _(你会看到以 `ssh-ed25519` 开头的一长串字符，把它完整复制下来。)_
 
 2.  **粘贴到 VPS：**
 
-    * 连接你的 VPS：`ssh root@你的IP -p 56789` (注意替换端口)
-    * 创建存放目录（如果没有）：
-        ```bash
-        mkdir -p ~/.ssh && chmod 700 ~/.ssh
-        ```
-    * 编辑授权文件：
-        ```bash
-        nano ~/.ssh/authorized_keys
-        ```
-    * **操作：** 在编辑器里粘贴你刚才复制的那串公钥。
-    * **保存：** 按 `Ctrl + O` 保存，`Ctrl + X` 退出。
-    * **赋予正确权限（这一步极其重要，权限不对登录会失败）：**
-        ```bash
-        chmod 600 ~/.ssh/authorized_keys
-        ```
+    - 连接你的 VPS：`ssh root@你的IP -p 56789` (注意替换端口)
+    - 创建存放目录（如果没有）：
+      ```bash
+      mkdir -p ~/.ssh && chmod 700 ~/.ssh
+      ```
+    - 编辑授权文件：
+      ```bash
+      nano ~/.ssh/authorized_keys
+      ```
+    - **操作：** 在编辑器里粘贴你刚才复制的那串公钥。
+    - **保存：** 按 `Ctrl + O` 保存，`Ctrl + X` 退出。
+    - **赋予正确权限（这一步极其重要，权限不对登录会失败）：**
+      ```bash
+      chmod 600 ~/.ssh/authorized_keys
+      ```
 
 ---
 
@@ -76,6 +76,7 @@ tags: [VPS, Security, SSH, Linux]
 确认密钥能用后，我们把“密码登录”这个功能彻底关掉。以后谁想试密码都试不了。
 
 1.  在 VPS 里编辑配置文件：
+
     ```bash
     nano /etc/ssh/sshd_config
     ```
@@ -99,38 +100,37 @@ tags: [VPS, Security, SSH, Linux]
 ---
 
 📖 博客补充篇：VPS 重生后，如何快速“召回”老密钥？
+
 1. 前言：重装不是终结，而是纯净的开始
-在之前的文章中，我们学会了如何生成并配置 SSH 密钥。但当你点击了 RackNerd 后台那个绿色的 “Reinstall”（重新安装）按钮后，原本服务器里的密钥会被彻底抹除。
+   在之前的文章中，我们学会了如何生成并配置 SSH 密钥。但当你点击了 RackNerd 后台那个绿色的 “Reinstall”（重新安装）按钮后，原本服务器里的密钥会被彻底抹除。
 
 别担心，只要你本地的“金钥匙”还在，10 秒钟就能满血复活。
 
 2. 第一步：定位你本地的“金钥匙”
-在你电脑的 .ssh 目录下（通常是 C:\Users\用户名\.ssh），你会看到那个后缀名为 .pub 的文件。例如最先进的 id_ed25519.pub。
+   在你电脑的 .ssh 目录下（通常是 C:\Users\用户名\.ssh），你会看到那个后缀名为 .pub 的文件。例如最先进的 id_ed25519.pub。
 
 极客提醒：虽然 Windows 可能会把它识别成“Microsoft Publisher”文件，别管它，直接用记事本打开。
 
 3. 第二步：暴力“焊入”新系统
-当你用重装后获得的新密码连入崭新的 Ubuntu 22.04 后，直接执行以下这行“三合一”绝杀指令：
+   当你用重装后获得的新密码连入崭新的 Ubuntu 22.04 后，直接执行以下这行“三合一”绝杀指令：
 
 ```bash
 # 一键创建目录、写入密钥、锁定权限
 mkdir -p ~/.ssh && echo "粘贴你 id_ed25519.pub 里的全部内容" >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys
- ```
+```
+
 4. 第三步：验证与绝杀（禁用密码登录）
-验证：开个新窗口尝试 ssh root@你的IP，你会发现不再弹密码框，直接秒进！
+   验证：开个新窗口尝试 ssh root@你的IP，你会发现不再弹密码框，直接秒进！
 
 绝杀：确定密钥生效后，记得回到上一篇教程，将 PasswordAuthentication 修改为 no，彻底封死黑客爆破的可能。
 
 ---
-
 
 ### 总结
 
 从此以后，这台 VPS 只认你电脑里的那把“钥匙”。无论你是从 Debian 换到 Ubuntu，还是买了第 100 台新 VPS，只要这一行指令，你就是这台机器永恒的主人。
 
 > **备忘录：** 请务必备份好你本地电脑的 `.ssh` 文件夹！如果电脑丢了或者重装系统，没有私钥你也进不去 VPS 了（那时候只能去服务商后台用 VNC 救急）。
-
-
 
 ---
 

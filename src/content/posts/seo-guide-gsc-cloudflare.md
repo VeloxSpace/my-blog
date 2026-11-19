@@ -10,8 +10,7 @@ tags:
   - Cloudflare
   - Google Search Console
   - 运维
-description:
-  搭建好博客只是第一步，如何让 Google 快速收录？本文记录了从 GSC 域名验证、Sitemap 提交避坑，到使用 Cloudflare 301 重定向聚合域名的全过程 SEO 优化实战。
+description: 搭建好博客只是第一步，如何让 Google 快速收录？本文记录了从 GSC 域名验证、Sitemap 提交避坑，到使用 Cloudflare 301 重定向聚合域名的全过程 SEO 优化实战。
 ---
 
 ## 🌏 前言：告别“数字孤岛”
@@ -30,11 +29,11 @@ description:
 
 1.  访问 **Google Search Console**。
 2.  点击左上角“添加资源”，选择 **【网域 (Domain)】** 类型（强烈推荐！👍）。
-    * *💡 Note：不要选右边的“网址前缀”，选左边的“网域”可以通吃所有子域名（http/https/www/blog）。*
+    - _💡 Note：不要选右边的“网址前缀”，选左边的“网域”可以通吃所有子域名（http/https/www/blog）。_
 3.  输入你的裸域名（例如我的 `222382.xyz`）。
 4.  **验证环节**：
-    * **自动验证（推荐）**：如果你像我一样使用 [Cloudflare](https://www.cloudflare.com/) 托管 DNS，GSC 会弹窗请求授权。点击 **“授权”** 按钮，它会自动在你的 Cloudflare DNS 里“贴”上一条 TXT 记录。
-    * **手动验证**：复制 `google-site-verification` 代码 -> Cloudflare 后台 -> DNS -> 添加 TXT 记录 -> 保存。
+    - **自动验证（推荐）**：如果你像我一样使用 [Cloudflare](https://www.cloudflare.com/) 托管 DNS，GSC 会弹窗请求授权。点击 **“授权”** 按钮，它会自动在你的 Cloudflare DNS 里“贴”上一条 TXT 记录。
+    - **手动验证**：复制 `google-site-verification` 代码 -> Cloudflare 后台 -> DNS -> 添加 TXT 记录 -> 保存。
 
 > ✅ **状态 check**：看到绿色的 **“已完成所有权验证”** 提示，第一步就完美搞定！
 
@@ -47,9 +46,9 @@ description:
 1.  在 GSC 左侧菜单点击 **“站点地图 (Sitemaps)”**。
 2.  输入你的 Sitemap 地址（通常是 `sitemap.xml` 或 `sitemap-index.xml`）。
 3.  **🔴 遇到报错怎么办？**
-    * 如果你确认链接在浏览器能打开，但 GSC 一直爆红。
-    * **绝招**：不要提交那个总索引文件，而是**直接提交它里面的“子地图”**！
-    * 例如输入：`sitemap-0.xml`
+    - 如果你确认链接在浏览器能打开，但 GSC 一直爆红。
+    - **绝招**：不要提交那个总索引文件，而是**直接提交它里面的“子地图”**！
+    - 例如输入：`sitemap-0.xml`
 
 **✨ 奇迹发生**：提交子地图后，状态瞬间变绿！**“成功 (Success)”**！🟢
 
@@ -81,25 +80,28 @@ description:
 1.  进入 [Cloudflare](https://www.cloudflare.com/) -> 左侧菜单 **Rules** -> **Create rule** -> **Redirect Rules**。
 2.  **配置如下**：
     **1. 规则名称 (Rule name)**：
-随便填，例如 `Blog转主站`。
+    随便填，例如 `Blog转主站`。
 
 **2. 当传入请求匹配时 (When incoming requests match)**：
-* 点选 **自定义过滤表达式 (Custom filter expression)**。
-* **字段 (Field)**：选择 `主机名 (Hostname)`。
-* **运算符 (Operator)**：选择 `等于 (equals)`。
-* **值 (Value)**：输入 `blog.222382.xyz` (替换成你的副域名)。
+
+- 点选 **自定义过滤表达式 (Custom filter expression)**。
+- **字段 (Field)**：选择 `主机名 (Hostname)`。
+- **运算符 (Operator)**：选择 `等于 (equals)`。
+- **值 (Value)**：输入 `blog.222382.xyz` (替换成你的副域名)。
 
 **3. URL 重定向 (URL redirect)**：
-* **类型 (Type)**：选择 `动态 (Dynamic)`。
-* **表达式 (Expression)**：复制下面这行代码，**一字不差地粘贴进去**：
-    ```javascript
-    concat("[https://222382.xyz](https://222382.xyz)", http.request.uri.path)
-    ```
-    *(注意：请手动修改引号里的域名为你自己的主域名)*
-* **保留查询字符串 (Preserve query string)**：**必须 勾选 ✅**。
-* **状态代码 (Status code)**：选择 `301`。
+
+- **类型 (Type)**：选择 `动态 (Dynamic)`。
+- **表达式 (Expression)**：复制下面这行代码，**一字不差地粘贴进去**：
+  ```javascript
+  concat("[https://222382.xyz](https://222382.xyz)", http.request.uri.path);
+  ```
+  _(注意：请手动修改引号里的域名为你自己的主域名)_
+- **保留查询字符串 (Preserve query string)**：**必须 勾选 ✅**。
+- **状态代码 (Status code)**：选择 `301`。
 
 ### 🎉 效果展示
+
 部署后，当用户访问 `https://blog.222382.xyz` 时，浏览器地址栏会 **“嗖”** 的一下，自动跳变成 `https://222382.xyz`。
 
 ---
@@ -114,8 +116,6 @@ description:
 
 现在的博客，不仅内容硬核，连基础设施也是 **运维级** 的标准！
 坐等 Google 收录，享受流量吧！😎
-
-
 
 ---
 

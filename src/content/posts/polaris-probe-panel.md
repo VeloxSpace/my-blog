@@ -202,6 +202,7 @@ docker compose up -d --force-recreate polaris
 ```
 
 在 VPS 终端里跑，只 `restart` 不够，必须 `force-recreate`。
+
 - **密钥目录 700，文件 440，Telegram 文件属组脚本直接写成面板进程的 10001，不用手动改**。
 
 ### 2. 启动
@@ -348,6 +349,7 @@ rm -f /tmp/go.tgz
 ```bash
 go clean -cache -modcache
 ```
+
 > Go 编译缓存 `/root/go` 第一次编完很小，多次重编才会攒起来，平时稳定运行不涨，盘紧或者攒到 1、2G 再用这条指令平时不用清。
 
 **验收**：

@@ -43,10 +43,12 @@ adb shell pm list packages -d > k50-disabled-packages.txt
 **这两个 txt 不在手机里，在电脑上，就在你跑命令的那个 `platform-tools` 文件夹里。文件名里的 `k50` 换成你自己的型号。**
 
 ![系统包扫描结果](https://pub-65eb3861e8d64d24a3280e55bd221735.r2.dev/blog-img-1793974036827.jpg)
->系统包扫描结果：一次扫出全部系统包，卸掉的包不在里面。
+
+> 系统包扫描结果：一次扫出全部系统包，卸掉的包不在里面。
 
 ![已停用包扫描结果](https://pub-65eb3861e8d64d24a3280e55bd221735.r2.dev/blog-img-1793974098239.jpg)
->已停用包扫描结果：全机只有 cleanmaster 1 条还冻着。
+
+> 已停用包扫描结果：全机只有 cleanmaster 1 条还冻着。
 
 ---
 
@@ -212,7 +214,8 @@ adb shell pm uninstall -k --user 0 com.miui.securityinputmethod
 ### 2. 第二组：2 条
 
 **`com.baidu.input_mi`：百度输入法小米版。`com.iflytek.inputmethod.miui`：讯飞输入法小米版。它俩不是安全键盘里绑着的，是独立的包，装在 `/data/app` 里，`pm list -s` 扫不到，是 `adb shell ime list -a` 抓到的真包名。默认已经是 Gboard，卸了它俩还有键盘用。**
->注意：这两条用 install-existing 装不回来，后期无法回滚实现，卸载前需要谨慎考虑。
+
+> 注意：这两条用 install-existing 装不回来，后期无法回滚实现，卸载前需要谨慎考虑。
 
 ```cmd
 adb shell pm uninstall -k --user 0 com.baidu.input_mi

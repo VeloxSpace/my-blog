@@ -23,9 +23,9 @@ description: 之前的教程太简单了，万一换了新电脑怎么办？这�
 
 首先，我们需要把 Git 这个工具装进电脑里。
 
-* **下载地址**：[Git 官网下载页面](https://git-scm.com/download/win)
-* **安装方式**：下载 `64-bit Git for Windows Setup`，双击运行。
-* **注意**：安装过程中会出现大概十几个选项，**全程无脑点击 "Next"（下一步）** 即可，默认配置已经足够好用。
+- **下载地址**：[Git 官网下载页面](https://git-scm.com/download/win)
+- **安装方式**：下载 `64-bit Git for Windows Setup`，双击运行。
+- **注意**：安装过程中会出现大概十几个选项，**全程无脑点击 "Next"（下一步）** 即可，默认配置已经足够好用。
 
 ### 2. 验证安装
 
@@ -56,7 +56,7 @@ git config --global user.email "你的GitHub注册邮箱@example.com"
 ssh-keygen -t ed25519 -C "你的GitHub注册邮箱@example.com"
 ```
 
-* **操作**：出现提示时，**连续按 3 次回车键**（不要设密码），直到看见一个矩形的字符画，说明钥匙生成了。
+- **操作**：出现提示时，**连续按 3 次回车键**（不要设密码），直到看见一个矩形的字符画，说明钥匙生成了。
 
 **查看公钥内容：**
 
@@ -64,12 +64,12 @@ ssh-keygen -t ed25519 -C "你的GitHub注册邮箱@example.com"
 type %USERPROFILE%\.ssh\id_ed25519.pub
 ```
 
-* **操作**：复制屏幕上显示的那一长串以 `ssh-ed25519` 开头的字符。
-* **去 GitHub 备案**：
-    1.  打开 [GitHub SSH 设置页面](https://github.com/settings/keys)。
-    2.  点击 **New SSH key**。
-    3.  Title 随便填（比如 `Lenovo-Laptop`），Key 粘贴刚才复制的内容。
-    4.  点击 **Add SSH key**。
+- **操作**：复制屏幕上显示的那一长串以 `ssh-ed25519` 开头的字符。
+- **去 GitHub 备案**：
+  1.  打开 [GitHub SSH 设置页面](https://github.com/settings/keys)。
+  2.  点击 **New SSH key**。
+  3.  Title 随便填（比如 `Lenovo-Laptop`），Key 粘贴刚才复制的内容。
+  4.  点击 **Add SSH key**。
 
 ---
 
@@ -95,7 +95,7 @@ cd Desktop
 git clone git@github.com:你的用户名/你的仓库名.git
 ```
 
-* 如果是第一次连接，它会问你 `Are you sure...?`，输入 `yes` 并回车。
+- 如果是第一次连接，它会问你 `Are you sure...?`，输入 `yes` 并回车。
 
 ### 3. 安装依赖（非常重要！）
 
@@ -138,7 +138,7 @@ git pull
 npm run dev
 ```
 
-* 按 `Ctrl + C` 可以退出预览模式。
+- 按 `Ctrl + C` 可以退出预览模式。
 
 ### 4. 打包（git add）
 
@@ -171,12 +171,14 @@ git push
 如果你有“魔法”工具，可以给 Git 单独挂个代理（假设你的代理端口是 `7890`，请根据软件设置自行修改）：
 
 **开启代理：**
+
 ```bash
 git config --global http.proxy [http://127.0.0.1:7890](http://127.0.0.1:7890)
 git config --global https.proxy [http://127.0.0.1:7890](http://127.0.0.1:7890)
 ```
 
 **取消代理（万一网络正常了）：**
+
 ```bash
 git config --global --unset http.proxy
 git config --global --unset https.proxy
@@ -186,12 +188,10 @@ git config --global --unset https.proxy
 
 这一套流程走下来，你就拥有了**跨设备管理博客**的能力。
 
-* **新电脑**：从阶段一做到阶段二。
-* **老电脑**：只做阶段三。
+- **新电脑**：从阶段一做到阶段二。
+- **老电脑**：只做阶段三。
 
 建议把这篇文章收藏进浏览器的书签，以备不时之需！🚀
-
-
 
 ---
 

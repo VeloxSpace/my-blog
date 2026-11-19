@@ -42,14 +42,14 @@ description: 放弃传统图床和手动 Git 提交！今天分享我是如何�
 我将我的“文件传输助手”改造成了 R2 直传机器人。我把截图粘贴给它，它背后的 Worker 会瞬间把图片二进制流塞进我的 Cloudflare R2“维洛克斯”存储桶，并利用 R2 的公共加速域名生成链接。
 
 ![Worker 部署代码截图](https://pub-65eb3861e8d64d24a3280e55bd221735.r2.dev/blog-img-1771759137457.jpg)
-*👆 核心魔法：利用 Worker 接收 TG 图片流并直传 R2 存储桶*
+_👆 核心魔法：利用 Worker 接收 TG 图片流并直传 R2 存储桶_
 
 部署完成后，实际体验简直爽到飞起！机器人不仅会秒回一个方便写博客的 Markdown 代码块，Telegram 还会自动抓取链接生成一张超大的实时预览图，安全感拉满！
 
 看看这丝滑的效果：
 
 ![TG 机器人回复效果](https://pub-65eb3861e8d64d24a3280e55bd221735.r2.dev/blog-img-1771767526587.jpg)
-*👆 最终形态：发图即得 Markdown 源码，外带超大预览图*
+_👆 最终形态：发图即得 Markdown 源码，外带超大预览图_
 
 ### 💻 附录：核心 Worker 源码
 
@@ -59,7 +59,8 @@ description: 放弃传统图床和手动 Git 提交！今天分享我是如何�
 export default {
   async fetch(request, env) {
     // 1. 验证 POST 请求
-    if (request.method !== "POST") return new Response("🚀 Velox 的 R2 图床极速通道已就绪！");
+    if (request.method !== "POST")
+      return new Response("🚀 Velox 的 R2 图床极速通道已就绪！");
 
     let update;
     try {
@@ -80,74 +81,81 @@ export default {
 
     try {
       // 3. 向 TG 索要真实下载路径
-      const fileRes = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/getFile?file_id=${fileId}`);
+      const fileRes = await fetch(
+        `https://api.telegram.org/bot${env.TG_BOT_TOKEN}/getFile?file_id=${fileId}`
+      );
       const fileData = await fileRes.json();
       if (!fileData.ok) throw new Error("获取 TG 图片路径失败");
       const filePath = fileData.result.file_path;
 
       // 4. 下载图片二进制流
-      const imgRes = await fetch(`https://api.telegram.org/file/bot${env.TG_BOT_TOKEN}/${filePath}`);
+      const imgRes = await fetch(
+        `https://api.telegram.org/file/bot${env.TG_BOT_TOKEN}/${filePath}`
+      );
       const imgBuffer = await imgRes.arrayBuffer();
 
       // 5. 生成极客时间戳文件名
-      const fileExt = filePath.split('.').pop() || 'png';
+      const fileExt = filePath.split(".").pop() || "png";
       const fileName = `blog-img-${Date.now()}.${fileExt}`;
 
       // 6. 暴力塞入 R2 维洛克斯网盘
       await env.MY_BUCKET.put(fileName, imgBuffer, {
-        httpMetadata: { contentType: `image/${fileExt}` }
+        httpMetadata: { contentType: `image/${fileExt}` },
       });
 
       // ==========================================
       // ⚠️ 极其关键：下面这里换成你图床真实的加速域名
-      const customDomain = "pub-65eb3861e8d64d24a3280e55bd221735.r2.dev"; 
+      const customDomain = "pub-65eb3861e8d64d24a3280e55bd221735.r2.dev";
       // ==========================================
 
       const rawUrl = `https://${customDomain}/${fileName}`;
 
       // 7. 发送极简纯净版回复给 TG
-      await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: `📸 **R2 直传成功！**\n\n🌐 **纯净链接 (长按或右键复制)**：\n${rawUrl}`,
-          parse_mode: "Markdown"
-        })
-      });
-      
+      await fetch(
+        `https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: `📸 **R2 直传成功！**\n\n🌐 **纯净链接 (长按或右键复制)**：\n${rawUrl}`,
+            parse_mode: "Markdown",
+          }),
+        }
+      );
     } catch (error) {
-      await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: `❌ 翻车了：${error.message}`
-        })
-      });
+      await fetch(
+        `https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: `❌ 翻车了：${error.message}`,
+          }),
+        }
+      );
     }
 
     return new Response("OK");
-  }
+  },
 };
 ```
+
 ---
 
 ## 🎉 总结：进入“心流”写作状态
 
 现在，我写这篇文章的体验是这样的：
 
-* 在 Telegram 里敲下这段文字。
-* 随手截几张刚才的部署图，粘贴给图床机器人。
-* 点击机器人回传的代码块，一键复制图片链接插到文字里。
-* 点击发送给写作机器人。
+- 在 Telegram 里敲下这段文字。
+- 随手截几张刚才的部署图，粘贴给图床机器人。
+- 点击机器人回传的代码块，一键复制图片链接插到文字里。
+- 点击发送给写作机器人。
 
 **一分钟后，你现在看到的这篇文章就自动上线了。**
 
 这就是 Serverless 时代给极客带来的终极自由。不需要维护服务器，不需要繁琐的操作，把一切重复劳动都交给机器人，而我们，只专注于创造价值本身。😎
-
-
-
 
 ---
 

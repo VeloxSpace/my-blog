@@ -1,9 +1,9 @@
 ---
-title: 'iPhone 变身下载神器：利用 a-shell mini 免费下载 YouTube 8K 视频 (保姆级教程)'
+title: "iPhone 变身下载神器：利用 a-shell mini 免费下载 YouTube 8K 视频 (保姆级教程)"
 pubDatetime: 2026-01-25T12:00:00
-description: '无需电脑，无需订阅 Premium。教你用 iPhone 上的终端神器 a-shell mini，配合 yt-dlp 轻松下载最高画质的 YouTube 视频，并完美解决播放问题。'
-tags: ['iOS', 'a-shell', 'yt-dlp', 'YouTube', '教程']
-layout: '../../layouts/BlogPost.astro'
+description: "无需电脑，无需订阅 Premium。教你用 iPhone 上的终端神器 a-shell mini，配合 yt-dlp 轻松下载最高画质的 YouTube 视频，并完美解决播放问题。"
+tags: ["iOS", "a-shell", "yt-dlp", "YouTube", "教程"]
+layout: "../../layouts/BlogPost.astro"
 ---
 
 **【前言】**
@@ -27,8 +27,8 @@ layout: '../../layouts/BlogPost.astro'
 pip install yt-dlp -i [https://pypi.tuna.tsinghua.edu.cn/simple](https://pypi.tuna.tsinghua.edu.cn/simple)
 ```
 
-* **小白解说**：`pip` 是安装工具，`yt-dlp` 是下载软件的名字，`-i` 后面那串网址是为了让它从国内服务器下载，速度飞快且不会报错。
-* **成功标志**：当屏幕最后停止滚动，并且出现 `Successfully installed...` 字样时，说明安装成功！
+- **小白解说**：`pip` 是安装工具，`yt-dlp` 是下载软件的名字，`-i` 后面那串网址是为了让它从国内服务器下载，速度飞快且不会报错。
+- **成功标志**：当屏幕最后停止滚动，并且出现 `Successfully installed...` 字样时，说明安装成功！
 
 ---
 
@@ -50,11 +50,11 @@ pip install yt-dlp -i [https://pypi.tuna.tsinghua.edu.cn/simple](https://pypi.tu
 yt-dlp "[https://youtu.be/你的视频链接xxx](https://youtu.be/你的视频链接xxx)"
 ```
 
-* **为什么加双引号？**：因为视频链接里常有 `?` `&` 等特殊符号，不加引号 App 会看不懂。
-* **下载过程**：
-    * 屏幕会疯狂滚动代码，显示百分比（如 `25%`... `100%`）。
-    * 最后会显示 `[Merger] Merging formats`，这是它在把最高画质的画面和最高音质的音频合成一个文件。
-    * 等到再次出现 `~/Documents$` 光标时，说明下载完成。
+- **为什么加双引号？**：因为视频链接里常有 `?` `&` 等特殊符号，不加引号 App 会看不懂。
+- **下载过程**：
+  - 屏幕会疯狂滚动代码，显示百分比（如 `25%`... `100%`）。
+  - 最后会显示 `[Merger] Merging formats`，这是它在把最高画质的画面和最高音质的音频合成一个文件。
+  - 等到再次出现 `~/Documents$` 光标时，说明下载完成。
 
 ---
 
@@ -65,32 +65,35 @@ yt-dlp "[https://youtu.be/你的视频链接xxx](https://youtu.be/你的视频�
 别急，iOS 的机制决定了文件在**“文件 (Files)”** App 里。
 
 ### 1. 找到视频文件
+
 打开 iPhone 自带的 **“文件 (Files)”** App：
-* 点击底部的 **“浏览”**。
-* 进入 **“我的 iPhone”**。
-* 找到 **“a-shell mini”** 文件夹。
-* 🎉 你的视频就躺在这里！通常是 `.webm` 或 `.mp4` 格式。
+
+- 点击底部的 **“浏览”**。
+- 进入 **“我的 iPhone”**。
+- 找到 **“a-shell mini”** 文件夹。
+- 🎉 你的视频就躺在这里！通常是 `.webm` 或 `.mp4` 格式。
 
 ### 2. 推荐播放方案 (Infuse YYDS!)
+
 由于 YouTube 的高画质视频（尤其是 MKV 或 WebM 格式）不仅体积大，编码也特殊，iPhone 自带的相册有时候打不开或者没声音。
 
 **强烈推荐配合以下软件观看：**
 
-* **方案 A：Infuse (iOS 播放器天花板)** ⭐⭐⭐⭐⭐
-    * **优势**：画质最强，完美支持 4K HDR 和杜比视界，界面精美。
-    * **操作**：
-        1. 打开 Infuse，点击右上角设置 -> 添加文件 -> 选择“a-shell mini”文件夹。
-        2. 你的下载库会自动变成一面精美的“海报墙”，点击即看！
-    * **备选操作**：也可以在“文件”App 里长按视频 -> 共享 -> 选择 Infuse。
+- **方案 A：Infuse (iOS 播放器天花板)** ⭐⭐⭐⭐⭐
+  - **优势**：画质最强，完美支持 4K HDR 和杜比视界，界面精美。
+  - **操作**：
+    1. 打开 Infuse，点击右上角设置 -> 添加文件 -> 选择“a-shell mini”文件夹。
+    2. 你的下载库会自动变成一面精美的“海报墙”，点击即看！
+  - **备选操作**：也可以在“文件”App 里长按视频 -> 共享 -> 选择 Infuse。
 
-* **方案 B：VLC for Mobile (免费替代)** ⭐⭐⭐⭐
-    * 如果你不想付费买 Infuse Pro，VLC 是最好的免费替代品，通吃所有格式。
-    * 在“文件”App 里长按视频 -> 共享 -> 选 VLC。
+- **方案 B：VLC for Mobile (免费替代)** ⭐⭐⭐⭐
+  - 如果你不想付费买 Infuse Pro，VLC 是最好的免费替代品，通吃所有格式。
+  - 在“文件”App 里长按视频 -> 共享 -> 选 VLC。
 
-* **方案 C：存入系统相册 (仅限 MP4)**
-    * 如果你下载运气好是 `.mp4` 格式：
-    * 在“文件”里打开视频 -> 左下角 **分享按钮** -> **“保存视频”**。
-    * 这样它就会出现在你的照片 App 里了。
+- **方案 C：存入系统相册 (仅限 MP4)**
+  - 如果你下载运气好是 `.mp4` 格式：
+  - 在“文件”里打开视频 -> 左下角 **分享按钮** -> **“保存视频”**。
+  - 这样它就会出现在你的照片 App 里了。
 
 ---
 
@@ -109,9 +112,6 @@ A：**当然可以！** `yt-dlp` 支持全球几百个视频网站。把链接�
 
 **总结：**
 不用电脑，不用花钱，几行代码就能把 iPhone 变成最强的媒体下载器。再配合 **Infuse** 带来的顶级视听享受，这才是 iPhone Pro 系列屏幕的正确打开方式！
-
-
-
 
 ---
 

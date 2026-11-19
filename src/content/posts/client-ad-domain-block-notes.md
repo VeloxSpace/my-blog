@@ -27,11 +27,11 @@ description: 自用备忘：在代理客户端用路由规则拦截常见谷歌/
 
 ## ⚠️ 能力边界（必读）
 
-| 能做什么 | 不能做什么 |
-|----------|------------|
-| 拦部分谷歌广告、联盟广告、追踪域名 | 保证所有 App、所有网站无广告 |
-| V2rayN 上我测过：部分长视频快进不再「必弹」一层广告 | YouTube 片头/中插稳定清零 |
-| 规则短、好维护 | 替代专门去广告客户端 / Premium |
+| 能做什么                                            | 不能做什么                     |
+| --------------------------------------------------- | ------------------------------ |
+| 拦部分谷歌广告、联盟广告、追踪域名                  | 保证所有 App、所有网站无广告   |
+| V2rayN 上我测过：部分长视频快进不再「必弹」一层广告 | YouTube 片头/中插稳定清零      |
+| 规则短、好维护                                      | 替代专门去广告客户端 / Premium |
 
 NekoBox 里若已开启：
 
@@ -101,32 +101,32 @@ DOMAIN-KEYWORD,pagead,REJECT
 在 `rules:` 中靠前位置（在最终 `MATCH` / 大分流之前）加入：
 
 ```yaml
-  # === 自用精简去广告（非全平台） ===
-  - DOMAIN-SUFFIX,doubleclick.net,REJECT
-  - DOMAIN-SUFFIX,googleadservices.com,REJECT
-  - DOMAIN-SUFFIX,googlesyndication.com,REJECT
-  - DOMAIN-SUFFIX,googletagservices.com,REJECT
-  - DOMAIN-SUFFIX,googletagmanager.com,REJECT
-  - DOMAIN-SUFFIX,google-analytics.com,REJECT
-  - DOMAIN-SUFFIX,adservice.google.com,REJECT
-  - DOMAIN-SUFFIX,pagead2.googlesyndication.com,REJECT
-  - DOMAIN-SUFFIX,ads.youtube.com,REJECT
-  - DOMAIN-SUFFIX,ads.twitter.com,REJECT
-  - DOMAIN-SUFFIX,ads.facebook.com,REJECT
-  - DOMAIN-SUFFIX,an.facebook.com,REJECT
-  - DOMAIN-SUFFIX,advertising.apple.com,REJECT
-  - DOMAIN-SUFFIX,iadsdk.apple.com,REJECT
-  - DOMAIN-SUFFIX,amazon-adsystem.com,REJECT
-  - DOMAIN-SUFFIX,pubmatic.com,REJECT
-  - DOMAIN-SUFFIX,openx.net,REJECT
-  - DOMAIN-SUFFIX,rubiconproject.com,REJECT
-  - DOMAIN-SUFFIX,criteo.com,REJECT
-  - DOMAIN-SUFFIX,taboola.com,REJECT
-  - DOMAIN-SUFFIX,outbrain.com,REJECT
-  - DOMAIN-SUFFIX,moatads.com,REJECT
-  - DOMAIN-SUFFIX,scorecardresearch.com,REJECT
-  - DOMAIN-KEYWORD,adservice,REJECT
-  - DOMAIN-KEYWORD,pagead,REJECT
+# === 自用精简去广告（非全平台） ===
+- DOMAIN-SUFFIX,doubleclick.net,REJECT
+- DOMAIN-SUFFIX,googleadservices.com,REJECT
+- DOMAIN-SUFFIX,googlesyndication.com,REJECT
+- DOMAIN-SUFFIX,googletagservices.com,REJECT
+- DOMAIN-SUFFIX,googletagmanager.com,REJECT
+- DOMAIN-SUFFIX,google-analytics.com,REJECT
+- DOMAIN-SUFFIX,adservice.google.com,REJECT
+- DOMAIN-SUFFIX,pagead2.googlesyndication.com,REJECT
+- DOMAIN-SUFFIX,ads.youtube.com,REJECT
+- DOMAIN-SUFFIX,ads.twitter.com,REJECT
+- DOMAIN-SUFFIX,ads.facebook.com,REJECT
+- DOMAIN-SUFFIX,an.facebook.com,REJECT
+- DOMAIN-SUFFIX,advertising.apple.com,REJECT
+- DOMAIN-SUFFIX,iadsdk.apple.com,REJECT
+- DOMAIN-SUFFIX,amazon-adsystem.com,REJECT
+- DOMAIN-SUFFIX,pubmatic.com,REJECT
+- DOMAIN-SUFFIX,openx.net,REJECT
+- DOMAIN-SUFFIX,rubiconproject.com,REJECT
+- DOMAIN-SUFFIX,criteo.com,REJECT
+- DOMAIN-SUFFIX,taboola.com,REJECT
+- DOMAIN-SUFFIX,outbrain.com,REJECT
+- DOMAIN-SUFFIX,moatads.com,REJECT
+- DOMAIN-SUFFIX,scorecardresearch.com,REJECT
+- DOMAIN-KEYWORD,adservice,REJECT
+- DOMAIN-KEYWORD,pagead,REJECT
 ```
 
 有 `rule-provider` 广告集的，也可以只用订阅规则集，与本文手写二选一即可，不必堆两套。
@@ -143,12 +143,12 @@ DOMAIN-KEYWORD,pagead,REJECT
 doubleclick.net,googleadservices.com,googlesyndication.com,googletagservices.com,adservice.google.com,pagead2.googlesyndication.com,ads.youtube.com,ad.youtube.com
 ```
 
-| 项 | 值 |
-|----|-----|
-| 别名 | 广告拦截 |
-| outboundTag | `block` |
-| 规则类型 | Routing |
-| 端口 / 进程 | 留空 |
+| 项          | 值       |
+| ----------- | -------- |
+| 别名        | 广告拦截 |
+| outboundTag | `block`  |
+| 规则类型    | Routing  |
+| 端口 / 进程 | 留空     |
 
 勾选启用，顺序尽量靠前。
 
@@ -214,11 +214,11 @@ geosite:category-ads-all → 屏蔽
 
 ## 🏆 小结
 
-| 客户端 | 做法 |
-|--------|------|
-| 小火箭 | `[Rule]` 里 `DOMAIN-SUFFIX` / `KEYWORD` → `REJECT` |
-| Clash | `rules` 里 → `REJECT` |
-| V2rayN | 路由 `block` + 逗号域名串 |
+| 客户端  | 做法                                                            |
+| ------- | --------------------------------------------------------------- |
+| 小火箭  | `[Rule]` 里 `DOMAIN-SUFFIX` / `KEYWORD` → `REJECT`              |
+| Clash   | `rules` 里 → `REJECT`                                           |
+| V2rayN  | 路由 `block` + 逗号域名串                                       |
 | NekoBox | 优先 `geosite:category-ads-all`；可选 `domain_suffix` + `block` |
 
 这是 **自用精简广告域名拦截备忘**，不是「全平台去广告工程」。  
