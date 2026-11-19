@@ -26,7 +26,7 @@ export default defineAstroPaperConfig({
       // NOTE: v7 appends the post's file path (src/content/posts/xxx.md)
       // to this URL, so it must be the repo-root edit URL with a trailing
       // slash — NOT the posts folder itself, or the path doubles up.
-      url: "https://github.com/VeloxSpace/my-new-blog/edit/main/",
+      url: "https://github.com/VeloxSpace/my-blog/edit/main/",
     },
     search: "pagefind",
     toc: true,
