@@ -48,7 +48,7 @@ _👆 核心魔法：利用 Worker 接收 TG 图片流并直传 R2 存储桶_
 
 看看这丝滑的效果：
 
-![TG 机器人回复效果](https://pub-65eb3861e8d64d24a3280e55bd221735.r2.dev/blog-img-1771767526587.jpg)
+![TG 机器人回复效果](/assets/tg-r2-bot-reply.jpg)
 _👆 最终形态：发图即得 Markdown 源码，外带超大预览图_
 
 ### 💻 附录：核心 Worker 源码
