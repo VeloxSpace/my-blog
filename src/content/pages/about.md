@@ -10,7 +10,7 @@ title: "About"
 
 - **VPS**: Google Cloud Platform (GCP) & RackNerd
 - **博客系统**: Astro (部署在 Cloudflare Pages)
-- **主要工具**: Hugo, GitHub, Cloudflare, Telegram, VLESS, Hysteria2
+- **主要工具**: GitHub, Cloudflare, Telegram, VLESS, Hysteria2, Polaris
 
 #### 联系我
 
