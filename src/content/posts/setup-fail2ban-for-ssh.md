@@ -87,6 +87,6 @@ sudo apt-get remove --purge fail2ban -y
 
 ---
 
-> **💡 提示：** > 本文首发于我的个人博客 **[Velo.x 的极客空间](https://222382.xyz)**。我在那里存放了更完整的 **[赛博写作流完全体：用 TG 机器人和 Cloudflare Workers 重构我的 Astro 博客系列教程](https://222382.xyz/posts/serverless-astro-tg-workflow/)**，排版更精美，更新也更及时，欢迎来踩踩！🚀
+> **💡 提示：** > 本文首发于我的个人博客 **[Velox 的极客空间](https://222382.xyz)**。我在那里存放了更完整的 **[赛博写作流完全体：用 TG 机器人和 Cloudflare Workers 重构我的 Astro 博客系列教程](https://222382.xyz/posts/serverless-astro-tg-workflow/)**，排版更精美，更新也更及时，欢迎来踩踩！🚀
 
 ---
