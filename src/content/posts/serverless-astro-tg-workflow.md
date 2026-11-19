@@ -159,6 +159,6 @@ export default {
 
 ---
 
-> **💡 提示：** > 本文首发于我的个人博客 **[Velo.x 的极客空间](https://222382.xyz)**。我在那里存放了更完整的 **[从 GSC 瞬间收录到 Cloudflare 301 权重聚合系列教程](https://222382.xyz/posts/seo-guide-gsc-cloudflare/)**，排版更精美，更新也更及时，欢迎来踩踩！🚀
+> 本文首发于 [Velox 的极客空间](https://222382.xyz)。
 
 ---

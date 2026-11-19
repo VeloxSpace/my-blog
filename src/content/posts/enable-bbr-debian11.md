@@ -74,6 +74,6 @@ sudo sysctl -p
 
 ---
 
-> **💡 提示：** > 本文首发于我的个人博客 **[Velo.x 的极客空间](https://222382.xyz)**。我在那里存放了更完整的 **[VPS 榨干计划：零成本搭建 Docker 镜像加速器 + KMS 激活服务 运维系列教程](https://222382.xyz/posts/vps-docker-kms-guide/)**，排版更精美，更新也更及时，欢迎来踩踩！🚀
+> **💡 提示：** > 本文首发于我的个人博客 **[Velox 的极客空间](https://222382.xyz)**。我在那里存放了更完整的 **[VPS 榨干计划：零成本搭建 Docker 镜像加速器 + KMS 激活服务 运维系列教程](https://222382.xyz/posts/vps-docker-kms-guide/)**，排版更精美，更新也更及时，欢迎来踩踩！🚀
 
 ---
