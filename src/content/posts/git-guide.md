@@ -119,7 +119,7 @@ npm install
 打开终端，必须先进入博客文件夹。
 
 ```bash
-cd Desktop\my-new-blog
+cd Desktop\my-blog
 ```
 
 ### 2. 同步（git pull）
