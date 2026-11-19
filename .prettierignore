@@ -12,3 +12,6 @@
 !.prettierrc
 !eslint.config.js
 !README.md
+
+# Cloudflare Pages headers file: not code, prettier has no parser for it
+/public/_headers

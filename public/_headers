@@ -1,0 +1,7 @@
+# Pagefind's stable-named files (pagefind.js, wasm, entry json) are cached
+# for a year by default. After an upgrade (e.g. Pagefind 1.4 -> 1.6) a
+# browser can keep the old JS and hang on "Searching for ...", so force
+# revalidation on the whole pagefind directory. The hashed chunk files
+# (.pf_meta / .pf_index / .pf_fragment) are immutable and tiny anyway.
+/pagefind/*
+  Cache-Control: public, max-age=0, must-revalidate
