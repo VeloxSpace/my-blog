@@ -1,0 +1,9 @@
+# pnpm < 10.5 refuses a workspace file without `packages`
+packages: ["."]
+
+# Disable pnpm 11's 24h minimum release age policy: CI install fails on
+# freshly published deps (e.g. astro 7.4.13) otherwise.
+minimumReleaseAge: 0
+allowBuilds:
+  esbuild: true
+  sharp: true

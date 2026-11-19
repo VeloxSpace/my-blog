@@ -1,0 +1,385 @@
+---
+title: 【架构】VeloX 极客分发架构：私有化部署与焦土化卸载全指南
+author: Velox
+pubDatetime: 2026-04-27T10:00:00+08:00
+slug: velox-stealth-dist-architecture
+featured: true
+draft: true
+tags:
+  - VPS
+  - 运维架构
+  - Nginx
+  - 安全
+  - CI/CD
+description: 从零构建基于 GitHub Private Repo 与 GCP Nginx 的私有化脚本分发中心，实现全自动无感热更新、防弹级隐匿与焦土化卸载，降维打击白嫖党。
+---
+
+> **架构核心**：GitHub Private Repo -> GCP Nginx Distributor -> Global Terminals
+> **战术目标**：源码物理隔绝、全自动分发、防弹级隐匿。
+
+## 🔴 零号指令：基因改造 (源码适配)
+
+在正式部署分发中心前，必须先在我的本地或 GitHub 仓库里对 `vx.sh` 进行**物理级适配**：
+
+1. **修改分发源**：将脚本内的 `SCRIPT_URL` 变量改为我的私有分发地址：
+   `SCRIPT_URL="https://你的域名:端口/你的隐秘目录/core.sh"`
+2. **抹除日志硬编码（极度关键）**：全局搜索源码中负责显示“进化编年史”的旧 GitHub 链接，在编辑器里直接搜索 `changelog.txt`，将其**全部物理替换**为母舰的战报频道路径：
+   `https://你的域名端口/stealth_8x9q2z/changelog.txt`
+3. **物理推送**：`git commit` 并 `push` 到我的私有仓库。
+   > _💡 极客验尸：只有把代码里的源头全线对齐母舰，按 `i` 键升级时才不会去撞 GitHub 的 404 南墙！_
+
+---
+
+## 🟢 第一阶段：锻造核心兵符 (GitHub 设置)
+
+**【步骤 1】获取 GitHub 永久 Token (PAT)**
+
+1. **进入靶场**：网页登录 GitHub -> `Settings` -> `Developer settings` -> `Personal access tokens` -> `Tokens (classic)`。
+2. **生成令牌**：点击 `Generate new token (classic)`。
+3. **参数装配**：
+   - `Note`: 填入 `VX_SYNC_ENGINE`
+   - `Expiration`: 选 `No expiration` (永久有效，一劳永逸)
+   - `Select scopes`: 仅勾选 `repo` (最高权限访问私有仓)
+4. **物理备份**：生成后立即复制 `ghp_` 开头的密文。_(⚠️ 警告：阅后即焚，弄丢只能物理重铸！)_
+
+---
+
+## 🟡 第二阶段：构建防弹分发中心 (GCP 服务器操作)
+
+**【步骤 2】一键满血装载 Nginx 引擎**
+直接在终端执行以下组合拳，物理开辟防弹地堡：
+
+```bash
+# 1. 极速装载 Nginx
+apt update && apt install nginx -y
+
+# 2. 开辟隐形地堡目录
+mkdir -p /var/www/stealth_8x9q2z
+
+# 3. 物理重铸分发配置（只听 45679 奇葩端口，拒绝遍历）
+cat << 'EOF' > /etc/nginx/conf.d/stealth.conf
+server {
+    listen 45679 ssl;
+    server_name _;
+
+    ssl_certificate      /etc/vx_vne/cert/acme.crt;
+    ssl_certificate_key  /etc/vx_vne/cert/acme.key;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    location /stealth_8x9q2z/ {
+        alias /var/www/stealth_8x9q2z/;
+        try_files $uri $uri/ =404;
+        autoindex off;
+
+        add_header Cache-Control "no-cache, must-revalidate";
+        expires 1m;
+    }
+
+    # 其他路径直接拒绝
+    location / {
+        return 444;
+    }
+}
+EOF
+
+# 4. 激活并开机自启
+systemctl enable nginx && systemctl restart nginx
+```
+
+> 打开指令 `sudo nano /etc/nginx/conf.d/stealth.conf`
+
+**【步骤 3】排雷：强杀 80 端口占用**
+为防止后续 ACME 申请证书暴毙，必须清除 Nginx 的默认占位：
+
+```bash
+rm -f /etc/nginx/sites-enabled/default
+systemctl restart nginx
+```
+
+_🕵️ **极客验尸**：敲入 `netstat -tunlp | grep :80`，没有任何输出即为绝对安全，ACME 申请将丝滑通关。_
+
+**【步骤 4】注入幽灵同步引擎**
+将 GCP 与我的 GitHub 私有仓物理打通。执行下面代码前，**记得把 `GITHUB_TOKEN` 换成我刚才申请的兵符**：
+
+```bash
+# 1. 铸造暗物质黑匣子（锁死权限，凭证仅 root 可见）
+echo "我的_ghp_令牌" > /root/.github_token
+chmod 600 /root/.github_token
+cat << 'EOF' > /root/sync_github.sh
+#!/bin/bash
+# === 🛡️ 极客级动态凭证装甲 ===
+if [ ! -f "/root/.github_token" ]; then
+    echo "$(date): 致命错误：未检测到核心兵符，终止同步！" >> /var/log/vx_sync.log
+    exit 1
+fi
+GITHUB_TOKEN=$(cat /root/.github_token)
+# ==================================
+REPO_URL="https://raw.githubusercontent.com/VeloxSpace/VX-Node-Engine/main/vx.sh"
+TARGET_FILE="/var/www/stealth_8x9q2z/core.sh"
+
+# 携带兵符强行拉取
+curl -s -H "Authorization: token ${GITHUB_TOKEN}" -L "${REPO_URL}" -o "${TARGET_FILE}.tmp"
+
+# 原子级替换，防止小白下载时发生中断断层
+if [ -s "${TARGET_FILE}.tmp" ]; then
+    mv -f "${TARGET_FILE}.tmp" "${TARGET_FILE}"
+    echo "$(date): 同步成功！" >> /var/log/vx_sync.log
+else
+    rm -f "${TARGET_FILE}.tmp"
+    echo "$(date): 同步失败，保持防御态势！" >> /var/log/vx_sync.log
+fi
+LOG_URL="https://raw.githubusercontent.com/VeloxSpace/VX-Node-Engine/main/changelog.txt"
+LOG_TARGET="/var/www/stealth_8x9q2z/changelog.txt"
+
+# 携带同一块兵符，强行拉取日志
+curl -s -H "Authorization: token ${GITHUB_TOKEN}" -L "${LOG_URL}" -o "${LOG_TARGET}.tmp"
+
+# 原子级替换，确保持续防弹
+if [ -s "${LOG_TARGET}.tmp" ]; then
+    mv -f "${LOG_TARGET}.tmp" "${LOG_TARGET}"
+else
+    rm -f "${LOG_TARGET}.tmp"
+fi
+# === 🛡️ 注入自动净化装甲 (暴力截断版) ===
+# 强行掐出最后 100 行并物理覆盖，多一行都留不住
+echo "$(tail -n 100 /var/log/vx_sync.log)" > /var/log/vx_sync.log
+EOF
+
+# 赋予执行权限并手动点火一次，完成首次拉取
+chmod +x /root/sync_github.sh
+/root/sync_github.sh
+```
+
+> 在服务器中调出这段代码的指令`nano /root/sync_github.sh`.
+
+---
+
+🔍 极客验尸（关键）：在 GitHub 改完代码，直接这一套连招丢过去：
+
+```bash
+/root/sync_github.sh && ls -lh /var/www/stealth_8x9q2z/{core.sh,changelog.txt}
+```
+
+> 这一行下去，同步+验尸一气呵成，这才是资深 `Linux` 运维大师的干练风格！看到 `100KB+`：母舰满血复活！
+
+---
+
+**【步骤 5】挂载自动化巡逻齿轮 (双引擎阵列)**
+
+为了实现“GitHub 源码更新 -> 母舰自动进货 -> 全网节点秒级列装”的终极闭环，我们需要部署两套独立齿轮。敲入 `crontab -e` 植入以下任务：
+
+1.  【母舰专属引擎】每5分钟强制从 GitHub 私有仓“进货”最新源码
+
+```bash
+*/5 * * * * /usr/bin/bash /root/sync_github.sh >/dev/null 2>&1
+```
+
+2.  【全域同步引擎】每5分钟利用缓存穿透，从母舰 Nginx 提取最新防弹基因
+    (🚨 架构师警告：母舰自身也需执行此步骤，以完成本机 /usr/local/bin/vx 的自我进化)
+
+```bash
+*/5 * * * * /usr/bin/curl -fsSLk "https://你的域名:你的端口/stealth_8x9q2z/core.sh?t=\$(/usr/bin/date +\%s)" -o /tmp/vx_update.tmp && [ -s /tmp/vx_update.tmp ] && /usr/bin/bash -n /tmp/vx_update.tmp && /usr/bin/mv -f /tmp/vx_update.tmp /usr/local/bin/vx && /usr/bin/chmod +x /usr/local/bin/vx || /usr/bin/rm -f /tmp/vx_update.tmp >/dev/null 2>&1
+```
+
+> ( ⚠️ 以上两条Cron任务仅需在GCP母舰上配置，其他节点VPS无需任何额外操作。)
+> 如果你用的是 Nano 编辑器（底部有提示），按 `Ctrl+O` 再回车保存，最后 `Ctrl+X` 退出。
+
+---
+
+**【步骤 5.1】部署母舰 Nginx 缓存穿透装甲 (极度关键)**
+
+为了防止全域小鸡在拉取时被 CDN 节点或本地缓存“降维打击”（导致死活拉不到最新基因），必须在母舰的分发塔里焊死“保鲜死线”。
+1.由于不确定我的 VeloX 网站配置文件具体叫什么名字，咱们先用 `grep `搞个“精准雷达探测”。在 GCP 母舰终端 执行：
+
+```bash
+grep -rl "stealth_8x9q2z" /etc/nginx/
+```
+
+2. 拿到路径后，直接用 `nano` 打开它（把下面命令里的路径替换成你刚才搜出来的那个）：
+
+```bash
+nano /etc/nginx/conf.d/stealth.conf
+```
+
+3. 找到刚才配置的 `location /stealth_8x9q2z/ { ... }` 块，在里面强行注入以下防弹代码：
+
+```nginx
+    # --- 注入物理级过期装甲 ---
+    # 强制命令所有终端与 CDN：此文件寿命仅 60 秒，超时必须回源母舰重载！
+    add_header Cache-Control "no-cache, must-revalidate";
+    expires 1m;
+    # --------------------------
+```
+
+4. 极客验尸与无损重载：
+   保存退出（`Ctrl+O` -> `Enter` -> `Ctrl+X`）后，严格执行“三位一体”物理重载指令，绝不容许语法暴毙：
+
+```bash
+nginx -t && systemctl restart nginx && systemctl status nginx
+```
+
+> _💡 架构师点验：只要看到满眼的 `syntax is ok` 和那抹极客绿色的 `active (running)`，母舰的分钟级高频保鲜机制即刻全网生效！从现在起，你在源码里改一个标点，全域战线 60 秒内强制对齐！_
+
+## 🟢 第三阶段：全网终端降维打击 (新机器装载)
+
+**【步骤 6】终极交付指令**
+我的分发弹药库已全面建成！以后在任意新节点（比如我的 RN）或小白的机器上，只需敲入这行代码即可一键满血装载引擎：
+
+```bash
+curl -fsSLk [https://your-domain.org](https://your-domain.org):端口/你的地堡目录/core.sh -o /usr/local/bin/vx && chmod +x /usr/local/bin/vx && vx
+```
+
+---
+
+## 🚨 附录：焦土化清理协议 (彻底卸载)
+
+当我准备迁移服务器或废弃该分发中心时，严格执行以下命令，物理抹除一切痕迹：
+
+```bash
+# 1. 物理爆破暗网弹药库与同步脚本
+rm -rf /var/www/stealth_8x9q2z
+rm -f /root/sync_github.sh
+rm -f /var/log/vx_sync.log
+
+# 2. 拆除 Nginx 防弹装甲并重载
+rm -f /etc/nginx/conf.d/stealth.conf
+systemctl restart nginx
+
+# 3. 摘除系统巡逻齿轮 (需手动执行)
+# 敲入 crontab -e，删掉带有 sync_github.sh 的那一行，保存退出。
+
+# 4. [核武级选项] 连 Nginx 本体一起物理拔管 (⚠️ 警告：仅在我不需要任何 Web 服务时执行)
+apt purge nginx nginx-common nginx-core -y && apt autoremove -y
+```
+
+---
+
+# 🚁 进阶：分发中心一键搬家（跃迁协议）
+
+当你的母舰（分发服务器）需要更换或迁移时，利用 Velox 面板的 21 号容灾中心，可以实现物理级克隆。
+
+### 第一步：母舰资产提取（旧服务器）
+
+1. 运行 Velox 面板，进入 `21` → `1`（全域资产打包）。
+2. 勾选以下模块：
+   - Nginx 私有分发地堡与同步引擎
+   - Acme.sh 域名 SSL 证书库（建议勾选）
+   - 系统自动化定时任务（Crontab）（建议勾选）
+3. 自定义路径处选择：
+   ```bash
+   /var/www/stealth_8x9q2z /etc/nginx/conf.d/stealth.conf
+   ```
+4. 打包完成后选择推送到 Telegram（推荐），并牢记加密密码。
+
+> 💡 架构师注：同步脚本、token、stealth.conf 都会自动被包含。
+
+---
+
+### 第二步：新母舰实战恢复完整流程（避坑版）
+
+#### 1. 新机器预装必要组件
+
+```bash
+apt update && apt install nginx lrzsz -y
+rm -f /etc/nginx/sites-enabled/default
+```
+
+#### 2. 上传备份包（推荐 PowerShell）
+
+```powershell
+scp -P 你的SSH端口 Velox_Assets_Backup.tar.gz.enc root@新机器IP:/root/
+```
+
+#### 确认一下文件在不在
+
+```bash
+ls -lh /root/Velox_Assets_Backup.tar.gz.enc
+```
+
+#### 3. 解密 + 解压
+
+```bash
+cd /root
+openssl enc -d -aes-256-cbc -pbkdf2 -in Velox_Assets_Backup.tar.gz.enc -out Velox_Assets_Backup.tar.gz
+cd /
+tar -xzpPf /root/Velox_Assets_Backup.tar.gz
+```
+
+#### 4. 检查核心文件
+
+```bash
+ls -lh /var/www/stealth_8x9q2z/
+ls -lh /etc/nginx/conf.d/stealth.conf
+ls -lh /root/sync_github.sh
+```
+
+#### 5. 检查并修正监听端口（重点）
+
+```bash
+grep listen /etc/nginx/conf.d/stealth.conf
+# 如果端口不一致，执行：
+sed -i 's/listen 旧端口 ssl;/listen 新端口 ssl;/' /etc/nginx/conf.d/stealth.conf
+```
+
+#### 6. 启动 Nginx
+
+```bash
+nginx -t && systemctl enable nginx && systemctl restart nginx
+ss -tlnp | grep 你的端口
+```
+
+#### 7. 手动补回 Cron（如果打包时跳过了）
+
+```bash
+crontab -e
+```
+
+加入以下两行（端口和域名改成你的实际值）：
+
+```bash
+*/5 * * * * /usr/bin/bash /root/sync_github.sh >/dev/null 2>&1
+*/5 * * * * /usr/bin/curl -fsSLk "https://你的域名:端口/stealth_8x9q2z/core.sh?t=\$(/usr/bin/date +\%s)" -o /tmp/vx_update.tmp && [ -s /tmp/vx_update.tmp ] && /usr/bin/bash -n /tmp/vx_update.tmp && /usr/bin/mv -f /tmp/vx_update.tmp /usr/local/bin/vx && /usr/bin/chmod +x /usr/local/bin/vx || /usr/bin/rm -f /tmp/vx_update.tmp >/dev/null 2>&1
+```
+
+#### 8. 本地验证（必须通过）
+
+```bash
+curl -fsSLk https://你的域名:端口/stealth_8x9q2z/core.sh -o /usr/local/bin/vx && chmod +x /usr/local/bin/vx && vx
+```
+
+#### 9. 立即舰机手动拉取脚本测试同步（不用等5分钟）
+
+```bash
+/root/sync_github.sh && ls -lh /var/www/stealth_8x9q2z/{core.sh,changelog.txt}
+```
+
+#### 10. 外部验证
+
+```bash
+dig +short 你的域名
+curl -fsSLk https://你的域名:端口/stealth_8x9q2z/core.sh -o /usr/local/bin/vx && chmod +x /usr/local/bin/vx && vx
+```
+
+#### 11. 清理临时文件（可选）
+
+```bash
+rm -f /root/Velox_Assets_Backup.tar.gz /root/Velox_Assets_Backup.tar.gz.enc
+```
+
+#### 12. 域名解析
+
+把分发域名解析到新服务器 IP，生效后客户端无需任何改动，自动从新母舰取货。
+
+---
+
+**完成以上步骤后，分发中枢即满血复活。**
+
+---
+
+🛡️ 架构师避坑提醒：
+
+1.域名指回：搬家完成后，新服务器 IP 已变。请立即前往 Cloudflare 或你的 DNS 服务商，将分发域名（如 `gcp02...`）解析到新服务器的 IP。
+
+2.零感迁移：域名解析生效后，发给小白或 RN 小鸡的部署指令完全不需要改动，它们会自动从新母舰取货，这就是域名分发的魅力！

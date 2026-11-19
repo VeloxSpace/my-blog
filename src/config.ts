@@ -1,85 +1,42 @@
-// ✅ 移除 import 引用，移除类型注解，补全所有参数 -> 绝对不报错版
+/**
+ * Internal resolved configuration used throughout the codebase.
+ *
+ * Prefer editing `astro-paper.config.ts` instead of this file. This module exists to
+ * apply defaults and expose a fully-resolved config shape (`ResolvedAstroPaperConfig`).
+ */
+import userConfig from "@/astro-paper.config";
+import type { ResolvedAstroPaperConfig } from "./types/config";
+import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
 
-export const SITE = {
-  website: "https://222382.xyz/",
-  author: "Velox",
-  profile: "https://github.com/VeloxSpace",
-  desc: "Velox 的个人博客",
-  title: "Velox",
-  ogImage: "astropaper-og.jpg",
-  lightAndDarkMode: true,
-  postPerPage: 3,
-  scheduledPostMargin: 15 * 60 * 1000,
-  showArchives: true,
+const DEFAULT_OG_IMAGE = "default-og.jpg";
 
-  // 👇 必需的参数全部都在这里
-  postPerIndex: 4,
-  dynamicOgImage: true,
-  showBackButton: true,
-  dir: "ltr",
-  lang: "zh-CN",
-  timezone: "Asia/Shanghai",
-
-  editPost: {
-    enabled: true,
-    text: "Edit page",
-    url: "https://github.com/VeloxSpace/my-new-blog/edit/main/src/content/blog",
-  }
+const config: ResolvedAstroPaperConfig = {
+  site: {
+    ...userConfig.site,
+    ogImage: userConfig.site.ogImage ?? DEFAULT_OG_IMAGE,
+    lang: userConfig.site.lang ?? "en",
+    timezone: userConfig.site.timezone ?? "UTC",
+    dir: userConfig.site.dir ?? "ltr",
+    googleVerification:
+      userConfig.site.googleVerification || PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
+  posts: {
+    perPage: userConfig.posts?.perPage ?? 4,
+    perIndex: userConfig.posts?.perIndex ?? 4,
+    // Deprecated and unused. Not read from userConfig, so builds don't warn about it.
+    scheduledPostMargin: 15 * 60 * 1000,
+  },
+  features: {
+    lightAndDarkMode: userConfig.features?.lightAndDarkMode ?? true,
+    dynamicOgImage: userConfig.features?.dynamicOgImage ?? true,
+    showArchives: userConfig.features?.showArchives ?? true,
+    showBackButton: userConfig.features?.showBackButton ?? true,
+    editPost: userConfig.features?.editPost ?? { enabled: false },
+    search: userConfig.features?.search ?? "pagefind",
+    toc: userConfig.features?.toc ?? true,
+  },
+  socials: userConfig.socials ?? [],
+  shareLinks: userConfig.shareLinks ?? [],
 };
 
-export const LOCALE = {
-  lang: "zh-CN",
-  langTag: ["zh-CN"],
-};
-
-export const LOGO_IMAGE = {
-  enable: false,
-  svg: true,
-  width: 216,
-  height: 46,
-};
-
-export const SOCIALS = [
-  {
-    name: "Github",
-    href: "https://github.com/VeloxSpace",
-    linkTitle: ` ${SITE.title} on Github`,
-    active: true,
-  },
-  {
-    name: "Facebook",
-    href: "https://github.com/satnaing/astro-paper",
-    linkTitle: `${SITE.title} on Facebook`,
-    active: false,
-  },
-  {
-    name: "Instagram",
-    href: "https://github.com/satnaing/astro-paper",
-    linkTitle: `${SITE.title} on Instagram`,
-    active: false,
-  },
-  {
-    name: "LinkedIn",
-    href: "https://github.com/satnaing/astro-paper",
-    linkTitle: `${SITE.title} on LinkedIn`,
-    active: false,
-  },
-  {
-    name: "Mail",
-    href: "mailto:pwenxiang51@gmail.com",
-    linkTitle: `Send an email to ${SITE.title}`,
-    active: true,
-  },
-  {
-    name: "Twitter",
-    href: "https://github.com/satnaing/astro-paper",
-    linkTitle: `${SITE.title} on Twitter`,
-    active: false,
-  },
-  {
-    name: "Telegram",
-    href: "https://t.me/Velox95",
-    linkTitle: `${SITE.title} on Telegram`,
-    active: true,
-  }
-];
+export default config;

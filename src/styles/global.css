@@ -1,37 +1,9 @@
 @import "tailwindcss";
+@import "./theme.css";
 @import "./typography.css";
+@import "rehype-callouts/theme/obsidian";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
-:root,
-html[data-theme="light"] {
-  --background: #f8f9fa;  /* 👈 就是这一行 */
-  --foreground: #282728;
-  --accent: #0284c7;
-  /* ...其他代码... */
-}
-
-html[data-theme="dark"] {
-  --background: #282a36;
-  --foreground: #eaedf3;
-  --accent: #38bdf8;
-  --muted: #343f60;
-  --border: #3f3f46;
-}
-
-@theme inline {
-  --font-app: var(--font-google-sans-code);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
-}
-
-:root {
-  --default-mono-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", monospace;
-}
-
 
 @layer base {
   * {
@@ -39,15 +11,9 @@ html[data-theme="dark"] {
     scrollbar-width: auto;
     scrollbar-color: var(--color-muted) transparent;
   }
- html {
-  @apply overflow-y-scroll scroll-smooth;
-  font-size: 20px;  /* 👈 加上这一行！ */
-}
-  body {
-    @apply flex min-h-svh flex-col bg-background font-app text-foreground selection:bg-accent/75 selection:text-background;
-  }
   a,
-  button {
+  button,
+  #main-content {
     @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
   }
   button:not(:disabled),
@@ -64,37 +30,46 @@ html[data-theme="dark"] {
   @apply mx-auto w-full max-w-app px-4;
 }
 
-.active-nav {
+@utility active-nav {
   @apply underline decoration-wavy decoration-2 underline-offset-8;
 }
 
-/* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
-/* Anything that has been anchored to should have extra scroll margin */
 :target {
   scroll-margin-block: 1rem;
 }
 
-/* ⬇️ 新增：强制加大标题字号 */
+/* Velox custom: larger base font + CJK mono fallbacks */
+:root {
+  --default-mono-font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans CJK SC", "Source Han Sans SC", monospace;
+}
+
 @layer base {
+  html {
+    font-size: 20px;
+  }
   h1 {
-    @apply font-extrabold text-4xl mb-6 mt-2;
+    @apply mt-2 mb-6 text-4xl font-extrabold;
   }
   h2 {
-    @apply font-bold text-3xl mb-4 mt-8;
+    @apply mt-8 mb-4 text-3xl font-bold;
   }
   h3 {
-    @apply font-bold text-2xl mb-2 mt-6;
+    @apply mt-6 mb-2 text-2xl font-bold;
   }
-  /* 修复文章链接的下划线样式 */
+  /* Article links: no underline, accent on hover */
   .prose a {
-    @apply no-underline hover:text-accent transition-colors;
+    @apply no-underline transition-colors hover:text-accent;
   }
 }
-/* ⬇️ 给底部图标注入灵魂：变色 + 呼吸感 */
+
+/* Footer social icons: accent + slight grow on hover */
 footer a {
-  @apply text-foreground transition-all duration-300; /* 默认颜色，加个0.3秒的顺滑过渡 */
+  @apply text-foreground transition-all duration-300;
 }
 
 footer a:hover {
-  @apply text-accent scale-110; /* ✅ 悬停效果：变蓝 (text-accent) + 微微放大 (scale-110) */
+  @apply scale-110 text-accent;
 }
