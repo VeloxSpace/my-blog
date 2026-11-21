@@ -33,7 +33,7 @@ export default defineAstroPaperConfig({
   },
   socials: [
     { name: "github", url: "https://github.com/VeloxSpace" },
-    { name: "mail", url: "mailto:pwenxiang51@gmail.com" },
+    { name: "mail", url: "mailto:velox@muse.ai" },
     { name: "telegram", url: "https://t.me/Velox95" },
   ],
   shareLinks: [
